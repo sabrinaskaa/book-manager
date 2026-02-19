@@ -2,26 +2,198 @@
 @import "datatables.net-dt/css/dataTables.dataTables.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f7f7f5;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: rgba(15, 23, 42, 0.08);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  --radius: 14px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.01em;
+}
+
+input,
+select,
+textarea {
+  outline: none;
+}
+
+.field-error {
+  display: block;
+  font-size: 12px;
+  margin-top: 6px;
+  color: #dc2626; /* red-600 */
+}
+
+/* error border */
+input.error,
+select.error,
+textarea.error {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+/* DataTables */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #fff;
+}
+
+table.dataTable {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+table.dataTable thead th {
+  background: #fafafa;
+  border-bottom: 1px solid var(--border) !important;
+  font-weight: 600;
+}
+
+table.dataTable tbody td {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+table.dataTable tbody tr:hover {
+  background: rgba(15, 23, 42, 0.03);
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+  background: #fff !important;
+  margin: 0 2px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: rgba(15, 23, 42, 0.06) !important;
+}
+
+.dataTables_wrapper {
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  color: #64748b;
+}
+
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* input search + select length */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #fff;
+  outline: none;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.25);
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+table.dataTable.notion-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  background: #fff;
+}
+
+table.dataTable.notion-table thead th {
+  background: #f8fafc !important;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1) !important;
+  padding: 12px 12px !important;
+}
+
+/* cells */
+table.dataTable.notion-table tbody td {
+  font-size: 14px;
+  color: #0f172a;
+  padding: 12px 12px !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+/* row hover */
+table.dataTable.notion-table tbody tr:hover {
+  background: rgba(15, 23, 42, 0.03) !important;
+}
+
+table.dataTable.notion-table tbody tr.odd,
+table.dataTable.notion-table tbody tr.even {
+  background: #fff !important;
+}
+
+/* pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 12px !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  padding: 6px 10px !important;
+  margin: 0 2px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: rgba(15, 23, 42, 0.06) !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
+  color: #0f172a !important;
+}
+
+/* processing label */
+.dataTables_processing {
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
 }

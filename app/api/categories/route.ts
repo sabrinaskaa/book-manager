@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { Category } from "@/models";
 
 export async function GET() {
-  const rows = await Category.findAll({ order: [["name", "ASC"]] });
+  const rows = await Category.findAll({ order: [["id", "ASC"]] });
   return NextResponse.json(rows);
 }
 

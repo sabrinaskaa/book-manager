@@ -4,6 +4,9 @@ import { NextResponse } from "next/server";
 import { Book } from "@/models";
 import { bookFormSchema } from "@/validations/bookForm";
 import { saveUploadedImage } from "@/lib/upload";
+import { deleteUploadedImageByUrl } from "@/lib/uploadDelete";
+
+type Ctx = { params: Promise<{ id: string }> };
 
 export async function GET(_: Request, ctx: { params: { id: string } }) {
   const id = Number(ctx.params.id);
@@ -16,15 +19,20 @@ export async function GET(_: Request, ctx: { params: { id: string } }) {
   return NextResponse.json({ ok: true, data: book });
 }
 
-export async function PUT(req: Request, ctx: { params: { id: string } }) {
+export async function PUT(req: Request, ctx: Ctx) {
   try {
-    const id = Number(ctx.params.id);
-    const book = await Book.findByPk(id);
-    if (!book)
+    const { id } = await ctx.params;
+    const bookId = Number(id);
+
+    const book = await Book.findByPk(bookId);
+    if (!book) {
       return NextResponse.json(
         { ok: false, message: "Not found" },
         { status: 404 },
       );
+    }
+
+    const oldImageUrl = book.imageUrl;
 
     const form = await req.formData();
     const raw = {
@@ -44,43 +52,59 @@ export async function PUT(req: Request, ctx: { params: { id: string } }) {
         {
           ok: false,
           message: "Validasi gagal",
-          errors: parsed.error.issues.map((e) => ({
-            field: e.path.join("."),
-            message: e.message,
-          })),
+          errors: parsed.error.flatten(),
         },
         { status: 400 },
       );
     }
 
-    // ubah image optional
     const image = form.get("image");
-    let imageUrl = book.imageUrl;
+
+    let newImageUrl = oldImageUrl;
+    let uploadedNewUrl: string | null = null;
+
+    // kalau ada image baru, simpan ke uploads
     if (image instanceof File && image.size > 0) {
       const saved = await saveUploadedImage(image);
-      imageUrl = saved.imageUrl;
+      newImageUrl = saved.imageUrl;
+      uploadedNewUrl = saved.imageUrl;
     }
 
-    await book.update({ ...parsed.data, imageUrl });
+    try {
+      await book.update({ ...parsed.data, imageUrl: newImageUrl });
+    } catch (err) {
+      if (uploadedNewUrl) {
+        await deleteUploadedImageByUrl(uploadedNewUrl).catch(() => {});
+      }
+      throw err;
+    }
+
+    // hapus file lama jika ada dan berbeda dengan yang baru
+    if (uploadedNewUrl && oldImageUrl && oldImageUrl !== uploadedNewUrl) {
+      await deleteUploadedImageByUrl(oldImageUrl).catch(() => {});
+    }
+
     return NextResponse.json({ ok: true, data: book });
   } catch (e) {
-    const errorMessage = e instanceof Error ? e.message : "Server error";
-    return NextResponse.json(
-      { ok: false, message: errorMessage },
-      { status: 500 },
-    );
+    const message = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ ok: false, message }, { status: 500 });
   }
 }
 
-export async function DELETE(_: Request, ctx: { params: { id: string } }) {
-  const id = Number(ctx.params.id);
-  const book = await Book.findByPk(id);
+export async function DELETE(_req: Request, ctx: Ctx) {
+  const { id } = await ctx.params;
+  const bookId = Number(id);
+
+  const book = await Book.findByPk(bookId);
   if (!book)
     return NextResponse.json(
       { ok: false, message: "Not found" },
       { status: 404 },
     );
 
+  const imageUrl = book.imageUrl;
   await book.destroy();
+
+  await deleteUploadedImageByUrl(imageUrl).catch(() => {});
   return NextResponse.json({ ok: true });
 }
