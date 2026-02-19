@@ -9,17 +9,27 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "datatables.net": "^2.3.7",
+    "datatables.net-dt": "^2.3.7",
+    "dotenv": "^17.3.1",
+    "jquery": "^4.0.0",
+    "mysql2": "^3.17.2",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "sequelize": "^6.37.7",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/datatables.net": "^1.10.28",
+    "@types/jquery": "^3.5.33",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "sequelize-cli": "^6.6.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
