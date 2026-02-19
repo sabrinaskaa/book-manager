@@ -430,7 +430,6 @@ export default function BooksPage() {
 
     closeCreateModal();
     dtRef.current?.ajax.reload(null, true);
-    alert("Book berhasil ditambahkan.");
   });
 
   // edit submit
@@ -548,7 +547,9 @@ export default function BooksPage() {
           </div>
 
           <div className="p-5">
-            <table ref={tableRef} className="w-full notion-table" />
+            <div className="dt-scroll-x">
+              <table ref={tableRef} className="w-full notion-table" />
+            </div>
           </div>
         </div>
       </div>

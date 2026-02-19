@@ -197,3 +197,51 @@ table.dataTable.notion-table tbody tr.even {
   color: #0f172a !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
 }
+
+.dt-scroll-x {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius);
+}
+
+.dt-scroll-x .dataTables_wrapper {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+.dt-scroll-x table.dataTable {
+  width: max-content !important;
+  min-width: 1100px !important;
+  table-layout: auto !important;
+}
+
+.dt-scroll-x table.dataTable thead th,
+.dt-scroll-x table.dataTable tbody td {
+  white-space: nowrap !important;
+}
+
+.dt-scroll-x table.dataTable thead th:first-child,
+.dt-scroll-x table.dataTable tbody td:first-child {
+  width: 70px !important;
+}
+
+.dt-scroll-x table.dataTable thead th:last-child,
+.dt-scroll-x table.dataTable tbody td:last-child {
+  width: 150px !important;
+}
+
+.dt-scroll-x::-webkit-scrollbar {
+  height: 10px;
+}
+.dt-scroll-x::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dt-scroll-x::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+}
+.dt-scroll-x::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.18);
+}
